@@ -1,0 +1,51 @@
+package network.artic.phylofunk.treefunks;
+
+import jebl.evolution.trees.RootedTree;
+import jebl.evolution.trees.SortedRootedTree;
+
+/**
+ * Reorder the branches at each node to increasing or decreasing tip counts
+ */
+public class Reorder extends TreeFunk {
+    public Reorder(String treeFileName,
+                   String metadataFileName,
+                   String outputPath,
+                   FormatType outputFormat,
+                   String indexColumn,
+                   int indexHeader,
+                   String headerDelimiter,
+                   OrderType orderType,
+                   String[] sortColumns,
+                   boolean isVerbose) {
+
+        super(metadataFileName, null, indexColumn, indexHeader, headerDelimiter, isVerbose);
+
+        RootedTree tree = readTree(treeFileName);
+
+        RootedTree outTree = tree;
+
+        if (sortColumns != null) {
+            throw new UnsupportedOperationException("sort by metadata columns not impemented yet");
+        }
+        
+        if (orderType != OrderType.UNCHANGED) {
+            if (isVerbose) {
+                outStream.println("Reordering branches by " + orderType.name().toLowerCase() + " node density");
+                outStream.println();
+            }
+            outTree = new SortedRootedTree(tree,
+                    orderType.equals(OrderType.DECREASING) ?
+                            SortedRootedTree.BranchOrdering.DECREASING_NODE_DENSITY :
+                            SortedRootedTree.BranchOrdering.INCREASING_NODE_DENSITY);
+        }
+
+        if (isVerbose) {
+            outStream.println("Writing tree file, " + outputPath + ", in " + outputFormat.name().toLowerCase() + " format");
+            outStream.println();
+        }
+
+        writeTreeFile(outTree, outputPath, outputFormat);
+    }
+
+}
+
