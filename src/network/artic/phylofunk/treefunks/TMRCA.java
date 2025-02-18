@@ -31,12 +31,12 @@ public class TMRCA extends TreeFunk {
     public static final FunkFactory FACTORY = new FunkFactory() {
         @Override
         public String getName() {
-            return "";
+            return "tmrca";
         }
 
         @Override
         public String getDescription() {
-            return "";
+            return "Extract a TMRCA for a set of taxa from a list of trees.";
         }
 
         @Override

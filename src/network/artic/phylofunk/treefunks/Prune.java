@@ -21,12 +21,12 @@ public class Prune extends TreeFunk {
     public static final FunkFactory FACTORY = new FunkFactory() {
         @Override
         public String getName() {
-            return "";
+            return "prune";
         }
 
         @Override
         public String getDescription() {
-            return "";
+            return "Prune out taxa from a list or based on metadata.";
         }
 
         @Override

@@ -28,7 +28,7 @@ public class Extract extends TreeFunk {
 
         @Override
         public String getDescription() {
-            return "";
+            return "Extract tip annotations as a metadata csv.";
         }
 
         @Override

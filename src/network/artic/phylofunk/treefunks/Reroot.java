@@ -26,12 +26,12 @@ public class Reroot extends TreeFunk {
     public static final FunkFactory FACTORY = new FunkFactory() {
         @Override
         public String getName() {
-            return "";
+            return "reroot";
         }
 
         @Override
         public String getDescription() {
-            return "";
+            return "Re-root the tree using an outgroup.";
         }
 
         @Override

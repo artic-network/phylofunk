@@ -29,7 +29,7 @@ public abstract class FunkApp {
         // create Options object
         Options options = new Options();
         options.addOption("h", "help", false, "display help");
-        options.addOption(null, "version", false, "display version");
+        options.addOption(null, "version", false, "display version and stop");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine commandLine = null;
@@ -40,13 +40,12 @@ public abstract class FunkApp {
             try {
                 factory = Funk.getCommandFactory(args[0], factories);
 
-                options.addOption("v", "verbose", false, "write analysis details to console");
-
-                factory.setOptions(options);
-
+                // parse first just with help and version as these override other options
                 commandLine = parser.parse(options, Arrays.copyOfRange(args, 1, args.length));
-
                 if (commandLine.hasOption("help")) {
+                    // add the options here for the help message
+                    factory.setOptions(options);
+                    options.addOption("v", "verbose", false, "write analysis details to console");
                     printHelp(factory, options);
                     return;
                 }
@@ -54,6 +53,13 @@ public abstract class FunkApp {
                     System.out.println(version);
                     return;
                 }
+
+                factory.setOptions(options);
+
+                options.addOption("v", "verbose", false, "write analysis details to console");
+
+                commandLine = parser.parse(options, Arrays.copyOfRange(args, 1, args.length));
+
 
             } catch (IllegalArgumentException iae) {
                 System.out.println("Unrecognised command: " + args[0] + "\n");
@@ -106,15 +112,19 @@ public abstract class FunkApp {
         sb.append(header);
 
         if (commandFactory == null) {
-            sb.append("Available commands:\n ");
+            sb.append("Available commands:\n");
+//            for (FunkFactory factory : factories) {
+//                sb.append(" ").append(factory.getName());
+//            }
             for (FunkFactory factory : factories) {
-                sb.append(" ").append(factory.getName());
+                sb.append("  ").append(factory.getName()).append(" - ").append(factory.getDescription()).append("\n");
             }
-            sb.append("\n\nuse: <command> -h,--help to display individual options\n");
+
+            sb.append("\nuse: " + name + " <command> -h,--help to display individual options\n\n");
 
             formatter.printHelp(name + " <command> <options> [-h]", sb.toString(), options, footer, false);
         } else {
-            sb.append("Funk: ")
+            sb.append("Command: ")
                     .append(commandFactory.getName())
                     .append("\n\n")
                     .append(commandFactory.getDescription())

@@ -25,12 +25,12 @@ public class Insert extends TreeFunk {
     public static final FunkFactory FACTORY = new FunkFactory() {
         @Override
         public String getName() {
-            return "";
+            return "insert";
         }
 
         @Override
         public String getDescription() {
-            return "";
+            return "Insert tips into the tree.";
         }
 
         @Override

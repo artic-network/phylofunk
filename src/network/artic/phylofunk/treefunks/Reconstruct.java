@@ -22,12 +22,12 @@ public class Reconstruct extends TreeFunk {
     public static final FunkFactory FACTORY = new FunkFactory() {
         @Override
         public String getName() {
-            return "";
+            return "reconstruct";
         }
 
         @Override
         public String getDescription() {
-            return "";
+            return "Reconstruct internal node annotations.";
         }
 
         @Override

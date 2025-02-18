@@ -1,12 +1,7 @@
 package network.artic.phylofunk;
 
-import network.artic.phylofunk.funks.Funk;
 import network.artic.phylofunk.funks.FunkFactory;
-import network.artic.phylofunk.treefunks.Annotate;
-import network.artic.phylofunk.treefunks.Collapse;
-import org.apache.commons.cli.*;
-
-import java.util.Arrays;
+import network.artic.phylofunk.treefunks.*;
 
 /**
  * Entrypoint class with main().
@@ -20,7 +15,18 @@ class ClusterFunk extends FunkApp {
 
     private static final FunkFactory[] FACTORIES = new FunkFactory[]{
             Annotate.FACTORY,
-            Collapse.FACTORY
+            Collapse.FACTORY,
+            Extract.FACTORY,
+            Insert.FACTORY,
+            Prune.FACTORY,
+            Reconstruct.FACTORY,
+            Reorder.FACTORY,
+            Reroot.FACTORY,
+            Sample.FACTORY,
+            Scale.FACTORY,
+            Split.FACTORY,
+            Statistics.FACTORY,
+            TMRCA.FACTORY
     };
 
     ClusterFunk(String[] args) {

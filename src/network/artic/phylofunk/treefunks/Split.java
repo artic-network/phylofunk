@@ -24,12 +24,12 @@ public class Split extends TreeFunk {
     public static final FunkFactory FACTORY = new FunkFactory() {
         @Override
         public String getName() {
-            return "";
+            return "split";
         }
 
         @Override
         public String getDescription() {
-            return "";
+            return "Split out subtrees based on tip annotations.";
         }
 
         @Override

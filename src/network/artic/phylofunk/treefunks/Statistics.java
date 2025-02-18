@@ -21,12 +21,12 @@ public class Statistics extends TreeFunk {
     public static final FunkFactory FACTORY = new FunkFactory() {
         @Override
         public String getName() {
-            return "";
+            return "statistics";
         }
 
         @Override
         public String getDescription() {
-            return "";
+            return "Extract statistics and information from trees.";
         }
 
         @Override

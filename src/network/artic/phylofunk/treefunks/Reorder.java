@@ -18,12 +18,12 @@ public class Reorder extends TreeFunk {
     public static final FunkFactory FACTORY = new FunkFactory() {
         @Override
         public String getName() {
-            return "";
+            return "reorder";
         }
 
         @Override
         public String getDescription() {
-            return "";
+            return "Re-order nodes in ascending or descending clade size.";
         }
 
         @Override

@@ -1,7 +1,10 @@
 package network.artic.phylofunk;
 
 import network.artic.phylofunk.funks.FunkFactory;
-import network.artic.phylofunk.treefunks.Collapse;
+import network.artic.phylofunk.seqfunks.Annotate;
+import network.artic.phylofunk.seqfunks.Dedupe;
+import network.artic.phylofunk.seqfunks.Extract;
+import network.artic.phylofunk.seqfunks.Hashes;
 
 /**
  *
@@ -13,8 +16,10 @@ class FastaFunk extends FunkApp {
     private static final String FOOTER = "";
 
     private static final FunkFactory[] FACTORIES = new FunkFactory[] {
-            network.artic.phylofunk.treefunks.Annotate.FACTORY,
-            Collapse.FACTORY
+            Annotate.FACTORY,
+            Dedupe.FACTORY,
+            Extract.FACTORY,
+            Hashes.FACTORY
     };
 
     FastaFunk(String[] args) {

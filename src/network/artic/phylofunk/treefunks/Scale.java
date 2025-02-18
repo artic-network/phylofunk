@@ -20,12 +20,12 @@ public class Scale extends TreeFunk {
     public static final FunkFactory FACTORY = new FunkFactory() {
         @Override
         public String getName() {
-            return "";
+            return "scale";
         }
 
         @Override
         public String getDescription() {
-            return "";
+            return "Scale all the branch lengths in a tree by a factor.";
         }
 
         @Override

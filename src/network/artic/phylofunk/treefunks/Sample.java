@@ -26,12 +26,12 @@ public class Sample extends TreeFunk {
     public static final FunkFactory FACTORY = new FunkFactory() {
         @Override
         public String getName() {
-            return "";
+            return "sample";
         }
 
         @Override
         public String getDescription() {
-            return "";
+            return "Sample taxa down using metadata attributes.";
         }
 
         @Override
