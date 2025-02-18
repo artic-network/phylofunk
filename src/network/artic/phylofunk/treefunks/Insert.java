@@ -1,11 +1,17 @@
 package network.artic.phylofunk.treefunks;
 
+import java.util.*;
+
 import jebl.evolution.graphs.Node;
 import jebl.evolution.taxa.Taxon;
 import jebl.evolution.trees.MutableRootedTree;
 import jebl.evolution.trees.RootedTree;
 
-import java.util.*;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Options;
+
+import network.artic.phylofunk.funks.FunkFactory;
+import static network.artic.phylofunk.treefunks.TreeOptions.*;
 
 /**
  * Replaces a tip in a tree with a polytomy of specified taxa
@@ -15,6 +21,60 @@ public class Insert extends TreeFunk {
         UNIQUE_ONLY,
         DUPLICATES
     }
+
+    public static final FunkFactory FACTORY = new FunkFactory() {
+        @Override
+        public String getName() {
+            return "";
+        }
+
+        @Override
+        public String getDescription() {
+            return "";
+        }
+
+        @Override
+        public void setOptions(Options options) {
+            options.addOption(INPUT);
+            options.addOption(METADATA);
+            options.addOption(OUTPUT_FILE);
+            options.addOption(OUTPUT_FORMAT);
+            options.addOption(INDEX_COLUMN);
+            options.addOption(INDEX_FIELD);
+            options.addOption(FIELD_DELIMITER);
+            options.addOption(DESTINATION_COLUMN);
+            options.addOption(UNIQUE_ONLY);
+            options.addOption(IGNORE_MISSING);
+        }
+
+        @Override
+        public void create(CommandLine commandLine, boolean isVerbose) {
+            FormatType format = FormatType.NEXUS;
+
+            if (commandLine.hasOption("f")) {
+                try {
+                    format = FormatType.valueOf(commandLine.getOptionValue("f").toUpperCase());
+                } catch (IllegalArgumentException iae) {
+                    errorStream.println("Unrecognised output format: " + commandLine.getOptionValue("f") + "\n");
+                    System.exit(1);
+                    return;
+                }
+            }
+
+            new Insert(
+                    commandLine.getOptionValue("input"),
+                    commandLine.getOptionValue("metadata"),
+                    commandLine.getOptionValue("output"),
+                    format,
+                    commandLine.getOptionValue("destination-column", ""),
+                    commandLine.getOptionValue("id-column", ""),
+                    Integer.parseInt(commandLine.getOptionValue("id-field", "0")),
+                    commandLine.getOptionValue("field-delimeter", DEFAULT_DELIMITER),
+                    commandLine.hasOption("unique-only"),
+                    commandLine.hasOption("ignore-missing"),
+                    isVerbose);
+        }
+    };
 
     public Insert(String treeFileName,
                   String metadataFileName,

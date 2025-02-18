@@ -5,10 +5,74 @@ import jebl.evolution.trees.MutableRootedTree;
 import jebl.evolution.trees.RootedTree;
 import jebl.evolution.trees.RootedTreeUtils;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.OptionGroup;
+import org.apache.commons.cli.Options;
+
+import network.artic.phylofunk.funks.FunkFactory;
+import static network.artic.phylofunk.treefunks.TreeOptions.*;
+
+
 /**
  * Scales branch lengths of a tree by a factor or to a specified root height.
  */
 public class Scale extends TreeFunk {
+    public static final FunkFactory FACTORY = new FunkFactory() {
+        @Override
+        public String getName() {
+            return "";
+        }
+
+        @Override
+        public String getDescription() {
+            return "";
+        }
+
+        @Override
+        public void setOptions(Options options) {
+            BRANCH_THRESHOLD.setRequired(false);
+            options.addOption(INPUT);
+            options.addOption(OUTPUT_FILE);
+            options.addOption(OUTPUT_FORMAT);
+            OptionGroup scaleGroup = new OptionGroup();
+            scaleGroup.addOption(SCALE_FACTOR);
+            scaleGroup.addOption(ROOT_HEIGHT);
+            options.addOptionGroup(scaleGroup);
+            options.addOption(BRANCH_THRESHOLD);
+        }
+
+        @Override
+        public void create(CommandLine commandLine, boolean isVerbose) {
+            FormatType format = FormatType.NEXUS;
+
+            if (commandLine.hasOption("f")) {
+                try {
+                    format = FormatType.valueOf(commandLine.getOptionValue("f").toUpperCase());
+                } catch (IllegalArgumentException iae) {
+                    errorStream.println("Unrecognised output format: " + commandLine.getOptionValue("f") + "\n");
+                    System.exit(1);
+                    return;
+                }
+            }
+
+            if (commandLine.hasOption("height") && commandLine.hasOption("factor")) {
+                errorStream.println("Use only one of the 'factor' or 'height' options\n");
+                System.exit(1);
+                return;
+            }
+
+            new Scale(
+                    commandLine.getOptionValue("input"),
+                    commandLine.getOptionValue("output"),
+                    format,
+                    Double.parseDouble(commandLine.getOptionValue("factor", "1.0")),
+                    Double.parseDouble(commandLine.getOptionValue("threshold", "-1.0")),
+                    commandLine.hasOption("height"),
+                    Double.parseDouble(commandLine.getOptionValue("height", "1.0")),
+                    isVerbose);
+        }
+    };
+
     public Scale(String treeFileName,
                  String outputPath,
                  FormatType outputFormat,

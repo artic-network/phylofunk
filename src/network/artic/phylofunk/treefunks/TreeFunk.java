@@ -156,11 +156,11 @@ public class TreeFunk extends Funk {
         return trees;
     }
 
-    final void processTrees(String treeFileName, TreeFunction function) {
+    final void processTrees(String treeFileName, TreeProcessor function) {
         processTrees(treeFileName, null, null, function);
     }
 
-    final void processTrees(String treeFileName, String outputFileName, FormatType outputFormat, TreeFunction function) {
+    final void processTrees(String treeFileName, String outputFileName, FormatType outputFormat, TreeProcessor function) {
 
         if (isVerbose) {
             outStream.println("  Reading treefile: " + treeFileName);

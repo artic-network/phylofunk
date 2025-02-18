@@ -6,6 +6,6 @@ import jebl.evolution.trees.RootedTree;
  * @author Andrew Rambaut
  * @version $
  */
-public interface TreeFunction {
+public interface TreeProcessor {
     RootedTree processTree(RootedTree tree);
 }

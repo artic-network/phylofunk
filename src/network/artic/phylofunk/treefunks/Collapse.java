@@ -3,10 +3,11 @@ package network.artic.phylofunk.treefunks;
 import jebl.evolution.graphs.Node;
 import jebl.evolution.trees.MutableRootedTree;
 import jebl.evolution.trees.RootedTree;
-import network.artic.phylofunk.funks.FunkFactory;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 
+import network.artic.phylofunk.funks.FunkFactory;
 import static network.artic.phylofunk.treefunks.TreeOptions.*;
 
 /**

@@ -1,19 +1,66 @@
 package network.artic.phylofunk.treefunks;
 
-import jebl.evolution.graphs.Node;
-import jebl.evolution.taxa.Taxon;
-import jebl.evolution.trees.RootedTree;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
+import jebl.evolution.graphs.Node;
+import jebl.evolution.taxa.Taxon;
+import jebl.evolution.trees.RootedTree;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Options;
+
+import network.artic.phylofunk.funks.FunkFactory;
+import static network.artic.phylofunk.treefunks.TreeOptions.*;
+
 /**
  * Extract metadata from tip annotations
  */
 public class Extract extends TreeFunk {
+    public static final FunkFactory FACTORY = new FunkFactory() {
+        @Override
+        public String getName() {
+            return "extract";
+        }
+
+        @Override
+        public String getDescription() {
+            return "";
+        }
+
+        @Override
+        public void setOptions(Options options) {
+            options.addOption(INPUT);
+            options.addOption(TAXON_FILE);
+            options.addOption(OUTPUT_FILE);
+            options.addOption(INDEX_COLUMN);
+            options.addOption(INDEX_FIELD);
+            options.addOption(FIELD_DELIMITER);
+            options.addOption(TIP_ATTRIBUTES);
+            options.addOption(IGNORE_MISSING);
+        }
+
+        @Override
+        public void create(CommandLine commandLine, boolean isVerbose) {
+            new Extract(
+                    commandLine.getOptionValue("input"),
+                    commandLine.getOptionValue("metadata-file"),
+                    commandLine.getOptionValue("taxon-file"),
+                    commandLine.getOptionValues("taxa"),
+                    commandLine.getOptionValues("tip-attributes"),
+                    commandLine.getOptionValue("output"),
+                    commandLine.getOptionValue("id-column", ""),
+                    Integer.parseInt(commandLine.getOptionValue("id-field", "0")),
+                    commandLine.getOptionValue("field-delimeter", DEFAULT_DELIMITER),
+                    commandLine.hasOption("ignore-missing"),
+                    isVerbose);
+        }
+
+    };
+
     public Extract(String treeFileName,
                    String metadataFileName,
                    String taxaFileName,

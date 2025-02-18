@@ -1,15 +1,16 @@
 package network.artic.phylofunk.treefunks;
 
+import java.util.Map;
+
 import jebl.evolution.graphs.Node;
 import jebl.evolution.taxa.Taxon;
 import jebl.evolution.trees.RootedTree;
-import network.artic.phylofunk.funks.FunkFactory;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 import org.apache.commons.csv.CSVRecord;
 
-import java.util.Map;
-
+import network.artic.phylofunk.funks.FunkFactory;
 import static network.artic.phylofunk.treefunks.TreeOptions.*;
 
 /**
@@ -37,7 +38,7 @@ public class Annotate extends TreeFunk {
             options.addOption(METADATA);
             options.addOption(INDEX_COLUMN);
             options.addOption(INDEX_FIELD);
-            options.addOption(HEADER_DELIMITER);
+            options.addOption(FIELD_DELIMITER);
             options.addOption(LABEL_FIELDS);
             options.addOption(TIP_ATTRIBUTES);
             options.addOption(REPLACE);

@@ -1,18 +1,77 @@
 package network.artic.phylofunk.treefunks;
 
-import jebl.evolution.graphs.Node;
-import jebl.evolution.taxa.Taxon;
-import jebl.evolution.trees.RootedTree;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import jebl.evolution.graphs.Node;
+import jebl.evolution.taxa.Taxon;
+import jebl.evolution.trees.RootedTree;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Options;
+
+import network.artic.phylofunk.funks.FunkFactory;
+import static network.artic.phylofunk.treefunks.TreeOptions.*;
+
+
 /**
  * Split the tree into subtrees defined by annotations of the tips or the nodes.
  */
 public class Split extends TreeFunk {
+
+    public static final FunkFactory FACTORY = new FunkFactory() {
+        @Override
+        public String getName() {
+            return "";
+        }
+
+        @Override
+        public String getDescription() {
+            return "";
+        }
+
+        @Override
+        public void setOptions(Options options) {
+            options.addOption(INPUT);
+            METADATA.setRequired(false);
+            options.addOption(METADATA);
+            options.addOption(OUTPUT_PATH);
+            options.addOption(OUTPUT_PREFIX);
+            options.addOption(OUTPUT_FORMAT);
+            options.addOption(OUTPUT_METADATA);
+            options.addOption(ATTRIBUTE);
+        }
+
+        @Override
+        public void create(CommandLine commandLine, boolean isVerbose) {
+            FormatType format = FormatType.NEXUS;
+
+            if (commandLine.hasOption("f")) {
+                try {
+                    format = FormatType.valueOf(commandLine.getOptionValue("f").toUpperCase());
+                } catch (IllegalArgumentException iae) {
+                    errorStream.println("Unrecognised output format: " + commandLine.getOptionValue("f") + "\n");
+                    System.exit(1);
+                    return;
+                }
+            }
+
+            new Split(
+                    commandLine.getOptionValue("input"),
+                    commandLine.getOptionValue("metadata"),
+                    commandLine.getOptionValue("output"),
+                    commandLine.getOptionValue("prefix"),
+                    format,
+                    commandLine.getOptionValue("output-metadata"),
+                    commandLine.getOptionValue("id-column", ""),
+                    Integer.parseInt(commandLine.getOptionValue("id-field", "0")),
+                    commandLine.getOptionValue("field-delimeter", DEFAULT_DELIMITER),
+                    commandLine.getOptionValue("attribute"),
+                    isVerbose);
+        }
+    };
 
     public Split(String treeFileName,
                  String metadataFileName,

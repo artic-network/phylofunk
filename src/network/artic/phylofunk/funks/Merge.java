@@ -1,7 +1,5 @@
 package network.artic.phylofunk.funks;
 
-import org.apache.commons.csv.CSVRecord;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -10,10 +8,53 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Options;
+import org.apache.commons.csv.CSVRecord;
+
+import static network.artic.phylofunk.funks.FunkOptions.*;
+
 /**
  * Merges two metadata tables based on an index column (usually taxon names).
  */
 public class Merge extends Funk {
+    public static final FunkFactory FACTORY = new FunkFactory() {
+        @Override
+        public String getName() {
+            return "merge";
+        }
+
+        @Override
+        public String getDescription() {
+            return "Merge two metadata files.";
+        }
+
+        @Override
+        public void setOptions(Options options) {
+            options.addOption(INPUT);
+            options.addOption(OUTPUT_FILE);
+            options.addOption(METADATA);
+            options.addOption(INDEX_COLUMN);
+            options.addOption(HEADER_FIELDS);
+            options.addOption(REPLACE);
+            options.addOption(IGNORE_MISSING);
+        }
+
+        @Override
+        public void create(CommandLine commandLine, boolean isVerbose) {
+            new Merge(
+                    commandLine.getOptionValue("input"),
+                    commandLine.getOptionValue("metadata"),
+                    commandLine.getOptionValue("output"),
+                    commandLine.getOptionValue("index-column", ""),
+                    null,
+                    commandLine.hasOption("overwrite"),
+                    commandLine.hasOption("ignore-missing"),
+                    isVerbose);
+        }
+
+    };
+
     public Merge(String metadataFileName1,
                  String metadataFileName2,
                  String outputFileName,

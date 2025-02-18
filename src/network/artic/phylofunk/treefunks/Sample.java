@@ -1,10 +1,5 @@
 package network.artic.phylofunk.treefunks;
 
-import jebl.evolution.graphs.Node;
-import jebl.evolution.taxa.Taxon;
-import jebl.evolution.trees.MutableRootedTree;
-import jebl.evolution.trees.RootedTree;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -12,10 +7,89 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import jebl.evolution.graphs.Node;
+import jebl.evolution.taxa.Taxon;
+import jebl.evolution.trees.MutableRootedTree;
+import jebl.evolution.trees.RootedTree;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Options;
+
+import network.artic.phylofunk.funks.FunkFactory;
+import static network.artic.phylofunk.treefunks.TreeOptions.*;
+
+
 /**
  * Sample taxa down using metadata attributes.
  */
 public class Sample extends TreeFunk {
+    public static final FunkFactory FACTORY = new FunkFactory() {
+        @Override
+        public String getName() {
+            return "";
+        }
+
+        @Override
+        public String getDescription() {
+            return "";
+        }
+
+        @Override
+        public void setOptions(Options options) {
+            options.addOption(INPUT);
+            options.addOption(METADATA);
+            options.addOption(TAXA);
+            options.addOption(OUTPUT_PATH);
+            options.addOption(OUTPUT_PREFIX);
+            options.addOption(OUTPUT_FORMAT);
+            options.addOption(INDEX_COLUMN);
+            options.addOption(INDEX_FIELD);
+            options.addOption(FIELD_DELIMITER);
+            options.addOption(COLLAPSE_BY);
+            options.addOption(CLUMP_BY);
+            options.addOption(MIN_COLLAPSED_SIZE);
+            options.addOption(MIN_CLUMPED_SIZE);
+            options.addOption(MAX_SOFT);
+            options.addOption(IGNORE_MISSING);
+        }
+
+        @Override
+        public void create(CommandLine commandLine, boolean isVerbose) {
+            FormatType format = FormatType.NEXUS;
+
+            if (commandLine.hasOption("f")) {
+                try {
+                    format = FormatType.valueOf(commandLine.getOptionValue("f").toUpperCase());
+                } catch (IllegalArgumentException iae) {
+                    errorStream.println("Unrecognised output format: " + commandLine.getOptionValue("f") + "\n");
+                    System.exit(1);
+                    return;
+                }
+            }
+
+            new Sample(
+                    commandLine.getOptionValue("input"),
+                    commandLine.getOptionValue("metadata"),
+                    commandLine.getOptionValue("taxa"),
+                    commandLine.getOptionValue("output"),
+                    commandLine.getOptionValue("prefix"),
+                    format,
+                    commandLine.getOptionValue("id-column", ""),
+                    Integer.parseInt(commandLine.getOptionValue("id-field", "0")),
+                    commandLine.getOptionValue("field-delimeter", "\\|"),
+                    1000,
+                    "adm0",
+                    "adm1",
+                    commandLine.getOptionValue("collapse-by", ""),
+                    commandLine.getOptionValue("clump-by", ""),
+                    Integer.parseInt(commandLine.getOptionValue("min-collapsed", "5")),
+                    Integer.parseInt(commandLine.getOptionValue("min-clumped", "5")),
+                    Integer.parseInt(commandLine.getOptionValue("max-soft", "100")),
+                    commandLine.hasOption("ignore-missing"),
+                    isVerbose);
+        }
+    };
+
     enum CollapseType {
         COLLAPSED("collapsed"),
         CLUMPED("clumped");

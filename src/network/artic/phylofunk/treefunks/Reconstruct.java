@@ -1,16 +1,71 @@
 package network.artic.phylofunk.treefunks;
 
-import jebl.evolution.graphs.Node;
-import jebl.evolution.trees.RootedTree;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import jebl.evolution.graphs.Node;
+import jebl.evolution.trees.RootedTree;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Options;
+
+import network.artic.phylofunk.funks.FunkFactory;
+import static network.artic.phylofunk.treefunks.TreeOptions.*;
+
 
 /**
  * Reconstructs annotation values at internal nodes using parsimony.
  */
 public class Reconstruct extends TreeFunk {
+
+    public static final FunkFactory FACTORY = new FunkFactory() {
+        @Override
+        public String getName() {
+            return "";
+        }
+
+        @Override
+        public String getDescription() {
+            return "";
+        }
+
+        @Override
+        public void setOptions(Options options) {
+            options.addOption(INPUT);
+            options.addOption(OUTPUT_FILE);
+            options.addOption(OUTPUT_FORMAT);
+            options.addOption(ATTRIBUTE);
+            options.addOption(OUT_ATTRIBUTE);
+            options.addOption(ROOT_VALUE);
+            options.addOption(ALGORITHM);
+        }
+
+        @Override
+        public void create(CommandLine commandLine, boolean isVerbose) {
+            FormatType format = FormatType.NEXUS;
+
+            if (commandLine.hasOption("f")) {
+                try {
+                    format = FormatType.valueOf(commandLine.getOptionValue("f").toUpperCase());
+                } catch (IllegalArgumentException iae) {
+                    errorStream.println("Unrecognised output format: " + commandLine.getOptionValue("f") + "\n");
+                    System.exit(1);
+                    return;
+                }
+            }
+
+            new Reconstruct(
+                    commandLine.getOptionValue("input"),
+                    commandLine.getOptionValue("output"),
+                    format,
+                    commandLine.getOptionValue("attribute"),
+                    commandLine.getOptionValue("out-attribute"),
+                    commandLine.getOptionValue("root-value"),
+                    commandLine.getOptionValue("algorithm").startsWith("del"),
+                    isVerbose);
+        }
+    };
 
     public Reconstruct(String treeFileName,
                        String outputFileName,

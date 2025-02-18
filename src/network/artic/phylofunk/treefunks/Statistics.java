@@ -1,15 +1,50 @@
 package network.artic.phylofunk.treefunks;
 
+import java.io.PrintStream;
+
 import jebl.evolution.trees.RootedTree;
 import jebl.evolution.trees.RootedTreeUtils;
 import jebl.evolution.trees.Utils;
 
-import java.io.PrintStream;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Options;
+
+import network.artic.phylofunk.funks.FunkFactory;
+import static network.artic.phylofunk.treefunks.TreeOptions.*;
+
 
 /**
  *
  */
 public class Statistics extends TreeFunk {
+
+    public static final FunkFactory FACTORY = new FunkFactory() {
+        @Override
+        public String getName() {
+            return "";
+        }
+
+        @Override
+        public String getDescription() {
+            return "";
+        }
+
+        @Override
+        public void setOptions(Options options) {
+            options.addOption(INPUT);
+            options.addOption(OUTPUT_FILE);
+            options.addOption(STATISTICS);
+        }
+
+        @Override
+        public void create(CommandLine commandLine, boolean isVerbose) {
+            new Statistics(
+                    commandLine.getOptionValue("input"),
+                    commandLine.getOptionValue("output"),
+                    commandLine.getOptionValues("stats"),
+                    isVerbose);
+        }
+    };
 
     enum StatisticType {
         INTERNAL_BRANCH_LENGTHS

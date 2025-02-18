@@ -1,11 +1,5 @@
 package network.artic.phylofunk.treefunks;
 
-import jebl.evolution.graphs.Node;
-import jebl.evolution.taxa.MissingTaxonException;
-import jebl.evolution.taxa.Taxon;
-import jebl.evolution.trees.RootedTree;
-import jebl.evolution.trees.RootedTreeUtils;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -13,10 +7,65 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
 
+import jebl.evolution.graphs.Node;
+import jebl.evolution.taxa.MissingTaxonException;
+import jebl.evolution.taxa.Taxon;
+import jebl.evolution.trees.RootedTree;
+import jebl.evolution.trees.RootedTreeUtils;
+
+import network.artic.phylofunk.funks.FunkOptions;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Options;
+
+import network.artic.phylofunk.funks.FunkFactory;
+
+import static network.artic.phylofunk.funks.FunkOptions.*;
+import static network.artic.phylofunk.funks.FunkOptions.INDEX_COLUMN;
+import static network.artic.phylofunk.funks.FunkOptions.INDEX_FIELD;
+import static network.artic.phylofunk.treefunks.TreeOptions.*;
+
 /**
  * Finds the time of most recent common ancestor of a set of taxa
  */
 public class TMRCA extends TreeFunk {
+    public static final FunkFactory FACTORY = new FunkFactory() {
+        @Override
+        public String getName() {
+            return "";
+        }
+
+        @Override
+        public String getDescription() {
+            return "";
+        }
+
+        @Override
+        public void setOptions(Options options) {
+            options.addOption(INPUT);
+            options.addOption(TAXON_FILE);
+            options.addOption(OUTPUT_FILE);
+            options.addOption(INDEX_COLUMN);
+            options.addOption(INDEX_FIELD);
+            options.addOption(FunkOptions.FIELD_DELIMITER);
+            options.addOption(STEM);
+        }
+
+        @Override
+        public void create(CommandLine commandLine, boolean isVerbose) {
+            new TMRCA(
+                    commandLine.getOptionValue("input"),
+                    commandLine.getOptionValue("taxon-file"),
+                    commandLine.getOptionValues("taxa"),
+                    commandLine.getOptionValue("output"),
+                    commandLine.getOptionValue("id-column", ""),
+                    Integer.parseInt(commandLine.getOptionValue("id-field", "0")),
+                    commandLine.getOptionValue("field-delimeter", DEFAULT_DELIMITER),
+                    commandLine.hasOption("stem"),
+                    commandLine.hasOption("ignore-missing"),
+                    isVerbose);
+        }
+    };
+
     public TMRCA(String treeFileName,
                  String taxaFileName,
                  String[] targetTaxa,
