@@ -1,4 +1,4 @@
-package funks.treefunks;
+package network.artic.phylofunk.treefunks;
 
 import jebl.evolution.graphs.Node;
 import jebl.evolution.trees.RootedTree;

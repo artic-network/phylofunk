@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Base class for all funk commands. Provides some static utility functions.
@@ -18,10 +19,10 @@ public abstract class Funk {
     public final boolean isVerbose;
     public final static PrintStream errorStream = System.err;
     public final static PrintStream outStream = System.out;
-    final String headerDelimiter;
-    Map<String, CSVRecord> metadata = null;
-    CSVRecord headerRecord = null;
+    protected Map<String, CSVRecord> metadata = null;
+    protected CSVRecord headerRecord = null;
 
+    Set<String> keys = null;
 
     /**
      * Constructor
@@ -97,7 +98,7 @@ public abstract class Funk {
 
     protected void readMetadataTable(String metadataFileName, String indexColumn) {
         metadata = readCSV(metadataFileName, indexColumn);
-        taxa = metadata.keySet();
+        keys = metadata.keySet();
 
         if (isVerbose) {
             outStream.println("Read metadata table: " + metadataFileName);
@@ -165,7 +166,7 @@ public abstract class Funk {
      * @param records
      * @param fileName
      */
-    void writeMetadataFile(List<CSVRecord> records, String fileName) {
+    protected void writeMetadataFile(List<CSVRecord> records, String fileName) {
         Funk.writeCSVFile(records, fileName);
     }
 }

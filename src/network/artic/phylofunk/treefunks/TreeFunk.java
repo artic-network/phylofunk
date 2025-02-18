@@ -23,6 +23,8 @@ import static java.util.stream.Collectors.toMap;
 public class TreeFunk extends Funk {
     public static final String DEFAULT_DELIMITER = "|";
 
+    final String headerDelimiter;
+
     final String indexColumn;
     final int indexHeader;
 
