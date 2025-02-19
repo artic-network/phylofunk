@@ -1,4 +1,4 @@
-{% set version = "0.0.25" %}
+{% set version = "1.0.0" %}
 
 package:
   name: jclusterfunk

@@ -3,7 +3,7 @@
 if [ -z "$FULL_PATH" ]; then
 	## resolve links - $0 may be a link to application
 	PRG="$0"
-
+	
 	# need this for relative symlinks
 	while [ -h "$PRG" ] ; do
 	    ls=`ls -ld "$PRG"`
@@ -22,5 +22,5 @@ if [ -z "$FULL_PATH" ]; then
 	cd "$saveddir"
 fi
 
-#echo java -Xms64m -Xmx4096m -cp "$FULL_PATH/phylofunk.jar" network.artic.phylofunk.ClusterFunk $*
-java -Xms64m -Xmx4096m -cp "$FULL_PATH/phylofunk.jar" network.artic.phylofunk.ClusterFunk $*
+#echo java -Xms64m -Xmx4096m -cp "$FULL_PATH/phylofunk.jar" network.artic.phylofunk.FastaFunk $*
+java -Xms64m -Xmx4096m -cp "$FULL_PATH/phylofunk.jar" network.artic.phylofunk.FastaFunk $*

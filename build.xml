@@ -1,13 +1,13 @@
 <?xml version="1.0" ?>
 
-<project name="JClusterFunk" default="dist" basedir=".">
+<project name="PhyloFunk" default="dist" basedir=".">
     <description>
-        Build file for JClusterFunk
+        Build file for PhyloFunk
     </description>
 
-    <property name="version" value="0.0.25" />
+    <property name="version" value="1.0.0" />
     <property name="release_dir" value="release" />
-    <property name="name" value="jclusterfunk" />
+    <property name="name" value="phylofunk" />
     <property name="package_dir" value="${release_dir}/${name}_v${version}" />
 
 
@@ -41,8 +41,8 @@
     <target name="compile" depends="init">
         <!-- Compile the java code from ${src} into ${build} -->
         <javac source="1.8" target="1.8" srcdir="${src}" destdir="${build}"
-               classpath="${lib}/jebl.jar:${lib}/commons-cli-1.4.jar:${lib}/commons-csv-1.8.jar">
-            <include name="network/artic/**"/>
+               classpath="${lib}/jebl.jar:${lib}/commons-cli-1.9.0.jar:${lib}/commons-csv-1.13.0.jar">
+            <include name="network/artic/phylofunk/**"/>
         </javac>
     </target>
 
@@ -52,12 +52,12 @@
 
         <jar jarfile="${dist}/${name}.jar">
             <zipgroupfileset dir="${lib}" includes="jebl.jar"/>
-            <zipgroupfileset dir="${lib}" includes="commons-cli-1.4.jar"/>
-            <zipgroupfileset dir="${lib}" includes="commons-csv-1.8.jar"/>
+            <zipgroupfileset dir="${lib}" includes="commons-cli-1.9.0.jar"/>
+            <zipgroupfileset dir="${lib}" includes="commons-csv-1.13.0.jar"/>
             <fileset dir="${build}" includes="**/*.class,**/*.properties,**/*.png,**/*.gif"/>
             <manifest>
                 <attribute name="Built-By" value="${user.name}"/>
-                <attribute name="Main-Class" value="network.artic.funks.ClusterFunk"/>
+                <attribute name="Main-Class" value="network.artic.phylofunk.ClusterFunk"/>
             </manifest>
         </jar>
 
