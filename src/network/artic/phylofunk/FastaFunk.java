@@ -19,7 +19,7 @@ class FastaFunk extends FunkApp {
             Annotate.FACTORY,
             Dedupe.FACTORY,
             Extract.FACTORY,
-            Hashes.FACTORY
+            // Hashes.FACTORY
     };
 
     FastaFunk(String[] args) {

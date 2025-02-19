@@ -34,40 +34,42 @@ public abstract class FunkApp {
         CommandLineParser parser = new DefaultParser();
         CommandLine commandLine = null;
 
-        FunkFactory factory = null;
+        FunkFactory factory;
 
         if (args.length > 0 && !args[0].startsWith("-")) {
-            try {
-                factory = Funk.getCommandFactory(args[0], factories);
+            factory = Funk.getCommandFactory(args[0], factories);
 
+            try {
                 // parse first just with help and version as these override other options
                 commandLine = parser.parse(options, Arrays.copyOfRange(args, 1, args.length));
-                if (commandLine.hasOption("help")) {
-                    // add the options here for the help message
-                    factory.setOptions(options);
-                    options.addOption("v", "verbose", false, "write analysis details to console");
-                    printHelp(factory, options);
-                    return;
-                }
-                if (commandLine.hasOption("version")) {
-                    System.out.println(version);
-                    return;
-                }
+            } catch (Exception ignored) {
+            }
 
+            if (commandLine == null || commandLine.hasOption("help")) {
+                // add the options here for the help message
                 factory.setOptions(options);
-
                 options.addOption("v", "verbose", false, "write analysis details to console");
+                printHelp(factory, options);
+                return;
+            }
+            if (commandLine != null && commandLine.hasOption("version")) {
+                System.out.println(version);
+                return;
+            }
 
+            factory.setOptions(options);
+
+            options.addOption("v", "verbose", false, "write analysis details to console");
+
+            try {
                 commandLine = parser.parse(options, Arrays.copyOfRange(args, 1, args.length));
-
-
             } catch (IllegalArgumentException iae) {
                 System.out.println("Unrecognised command: " + args[0] + "\n");
                 printHelp(null, options);
                 return;
             } catch (ParseException pe) {
                 System.out.println(pe.getMessage() + "\n");
-                printHelp(null, options);
+                printHelp(factory, options);
                 return;
             }
         } else {
@@ -129,7 +131,7 @@ public abstract class FunkApp {
                     .append("\n\n")
                     .append(commandFactory.getDescription())
                     .append("\n\n");
-            formatter.printHelp(name + " " + commandFactory, sb.toString(), options, footer, true);
+            formatter.printHelp(name + " " + commandFactory.getName(), sb.toString(), options, footer, true);
         }
     }
 

@@ -75,7 +75,7 @@ public abstract class Funk {
             }
         }
 
-        throw new IllegalArgumentException("Funk not found");
+        throw new IllegalArgumentException("Command not found");
     }
 
 
