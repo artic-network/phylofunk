@@ -1,6 +1,7 @@
 package network.artic.phylofunk;
 
 import network.artic.phylofunk.funks.FunkFactory;
+import network.artic.phylofunk.funks.Merge;
 import network.artic.phylofunk.seqfunks.Annotate;
 import network.artic.phylofunk.seqfunks.Dedupe;
 import network.artic.phylofunk.seqfunks.Extract;
@@ -19,6 +20,7 @@ class FastaFunk extends FunkApp {
             Annotate.FACTORY,
             Dedupe.FACTORY,
             Extract.FACTORY,
+            Merge.FACTORY
             // Hashes.FACTORY
     };
 

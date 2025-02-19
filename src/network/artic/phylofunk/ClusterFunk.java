@@ -1,6 +1,7 @@
 package network.artic.phylofunk;
 
 import network.artic.phylofunk.funks.FunkFactory;
+import network.artic.phylofunk.funks.Merge;
 import network.artic.phylofunk.treefunks.*;
 
 /**
@@ -18,6 +19,7 @@ class ClusterFunk extends FunkApp {
             Collapse.FACTORY,
             Extract.FACTORY,
             Insert.FACTORY,
+            Merge.FACTORY,
             Prune.FACTORY,
             Reconstruct.FACTORY,
             Reorder.FACTORY,

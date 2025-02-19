@@ -118,8 +118,18 @@ public abstract class FunkApp {
 //            for (FunkFactory factory : factories) {
 //                sb.append(" ").append(factory.getName());
 //            }
+            int maxLen = 0;
             for (FunkFactory factory : factories) {
-                sb.append("  ").append(factory.getName()).append(" - ").append(factory.getDescription()).append("\n");
+                if (factory.getName().length() > maxLen) {
+                    maxLen = factory.getName().length();
+                }
+            }
+            for (FunkFactory factory : factories) {
+                sb.append("  ").append(factory.getName());
+                for (int i = 0; i < maxLen - factory.getName().length(); i++) {
+                    sb.append(" ");
+                }
+                sb.append(" - ").append(factory.getDescription()).append("\n");
             }
 
             sb.append("\nuse: " + name + " <command> -h,--help to display individual options\n\n");
