@@ -50,6 +50,22 @@ public class FunkOptions {
             .desc("label field to use to match metadata (default = whole label)")
             .type(Integer.class).build();
 
+    public final static Option TARGET_COLUMN = Option.builder()
+            .longOpt("target-column")
+            .argName("column name")
+            .hasArg()
+            .required(false)
+            .desc("metadata column to use")
+            .type(String.class).build();
+
+    public final static Option TARGET_FIELD = Option.builder()
+            .longOpt("target-field")
+            .argName("field number")
+            .hasArg()
+            .required(false)
+            .desc("label field to use")
+            .type(Integer.class).build();
+
     public final static Option FIELD_DELIMITER = Option.builder()
             .longOpt("field-delimiter")
             .argName("delimiter")

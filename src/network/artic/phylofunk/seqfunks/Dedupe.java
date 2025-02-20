@@ -35,6 +35,8 @@ public class Dedupe extends SequenceFunk {
             options.addOption(METADATA);
             options.addOption(INDEX_COLUMN);
             options.addOption(INDEX_FIELD);
+            options.addOption(TARGET_COLUMN);
+            options.addOption(TARGET_FIELD);
             options.addOption(FIELD_DELIMITER);
         }
 
@@ -47,6 +49,8 @@ public class Dedupe extends SequenceFunk {
                     commandLine.getOptionValue("output-metadata"),
                     commandLine.getOptionValue("index-column", ""),
                     Integer.parseInt(commandLine.getOptionValue("index-field", "0")),
+                    commandLine.getOptionValue("target-column", ""),
+                    Integer.parseInt(commandLine.getOptionValue("target-field", "0")),
                     commandLine.getOptionValue("field-delimeter", "|"),
                     isVerbose);
         }
@@ -59,6 +63,8 @@ public class Dedupe extends SequenceFunk {
                   String outputMetadataFileName,
                   String indexColumn,
                   int indexField,
+                  String targetColumn,
+                  int targetField,
                   String headerDelimiter,
                   boolean isVerbose) {
 
@@ -67,6 +73,8 @@ public class Dedupe extends SequenceFunk {
         List<Sequence> sequences = readFasta(fastaFileName);
 
         Map<String, Sequence> sequenceMap = getSequenceMap(sequences);
+
+        throw new UnsupportedOperationException("filtering not implemented yet");
 
         if (isVerbose) {
             outStream.println("Writing fasta file, " + outputFileName + ", with " + sequenceMap.size() + " sequences");
