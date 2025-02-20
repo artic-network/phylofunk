@@ -86,8 +86,21 @@ public class Annotate extends SequenceFunk {
         super(metadataFileName, null, indexColumn, indexHeader, fieldDelimiter, isVerbose);
 
         if (annotateDescription) {
-            throw new UnsupportedOperationException("annotate-description option not suppoted");
+            throw new UnsupportedOperationException("annotate-description option not supported yet");
         }
+
+        if (metadata == null) {
+            errorStream.println("To use annotate sequence labels, a metadata file must be provided.");
+            System.exit(1);
+        }
+        
+        for (String column : labelColumns) {
+            if (!columnNames.contains(column)) {
+                errorStream.println("Metadata doesn't contain the label column, " + column + ".");
+                System.exit(1);
+            }
+        }
+
         List<Sequence> sequences = readFasta(fastaFileName);
 
         Map<String, Sequence> sequenceMap = getSequenceMap(sequences);
@@ -182,12 +195,11 @@ public class Annotate extends SequenceFunk {
             } else if (defaultValue != null) {
                 outStream.println("Unmatched sequences: " + missingCount + " given default values");
             }
-                outStream.println();
+            outStream.println();
         }
 
         return relabelledSequences;
     }
-
 
 }
 

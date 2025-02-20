@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="FastaFunk Dedupe" type="Application" factoryName="Application">
+  <configuration default="false" name="FastaFunk Annotate" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="network.artic.phylofunk.FastaFunk" />
     <module name="phylofunk" />
-    <option name="PROGRAM_PARAMETERS" value="dedupe -i genomes.fasta -m metadata.csv --id-column accession --target-column location -o deduped.fasta --output-metadata deduped.csv -v" />
+    <option name="PROGRAM_PARAMETERS" value="annotate -h  -v -i genomes.fasta-m metadata.tsv -c accession -o genomes-extract.fasta -d metadata-extract.csv" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
     <extension name="coverage">
       <pattern>

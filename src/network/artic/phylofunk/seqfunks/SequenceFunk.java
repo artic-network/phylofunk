@@ -199,11 +199,15 @@ public class SequenceFunk extends Funk {
     }
 
     final Map<String, Sequence> getSequenceMap(List<Sequence> sequences) {
+        return getSequenceMap(sequences, false);
+    }
+
+    final Map<String, Sequence> getSequenceMap(List<Sequence> sequences, boolean dedupe) {
         Map<String, Sequence> sequenceMap = new HashMap<>();
 
         for (Sequence sequence : sequences) {
             String index = getSequenceID(sequence);
-            if (isVerbose && sequenceMap.containsKey(index)) {
+            if (!dedupe && isVerbose && sequenceMap.containsKey(index)) {
                 outStream.println("FASTA file contains duplicate id: " + index);
             }
             sequenceMap.put(index, sequence);
@@ -215,15 +219,21 @@ public class SequenceFunk extends Funk {
     final String getSequenceID(Sequence sequence) {
         String index = sequence.getTaxon().getName();
         if (indexField > 0) { // index header fields indexed from 1
-            // if an index header field has been specified then split it out (otherwise use the entire name)
-            String[] headers = index.split(fieldDelimiter);
-            if (indexField > headers.length) {
-                errorStream.println("Sequence header, " + index + ", doesn't have enough fields (index-header = " + indexField + ")");
-                System.exit(1);
-            }
-            index = headers[indexField - 1];
+            index = getLabelField(index, indexField, fieldDelimiter);
         }
         return index;
+    }
+
+    final String getLabelField(String label, int labelField, String fieldDelimiter) {
+        if (labelField > 0) { // label fields indexed from 1
+            String[] headers = label.split(fieldDelimiter);
+            if (labelField > headers.length) {
+                errorStream.println("Sequence label, " + label + ", doesn't have enough fields (index-header = " + labelField + ")");
+                System.exit(1);
+            }
+            return headers[labelField - 1];
+        }
+        return null;
     }
 
 
