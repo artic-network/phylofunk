@@ -141,13 +141,13 @@ public class FunkOptions {
             .desc("extract only the matching rows (default false)")
             .type(String.class).build();
 
-    public final static Option IGNORE_MISSING = Option.builder()
+    public final static Option IGNORE_MISSING = Option.builder("im")
             .longOpt("ignore-missing")
             .required(false)
             .desc("ignore any missing matches in annotations table (default false)")
             .type(String.class).build();
 
-    public final static Option SKIP_MISSING = Option.builder()
+    public final static Option SKIP_MISSING = Option.builder("sm")
             .longOpt("skip-missing")
             .required(false)
             .desc("skip any missing matches in annotations table (default false)")
@@ -168,7 +168,7 @@ public class FunkOptions {
             .desc( "file of taxa (table or tree)" )
             .type(String.class).build();
 
-    public final static Option DEFAULT_VALUE = Option.builder(  )
+    public final static Option DEFAULT_VALUE = Option.builder( "dv" )
             .longOpt("default-value")
             .argName("value")
             .hasArg()
@@ -176,8 +176,15 @@ public class FunkOptions {
             .desc( "the default value to use if the index is not found in the metadata" )
             .type(String.class).build();
 
-    public final static Option MATCH_VALUES =  Option.builder(  )
-            .longOpt("match")
+    public final static Option MATCH_COLUMN =  Option.builder("mc" )
+            .longOpt("match-column")
+            .argName("columns")
+            .hasArgs()
+            .required(false)
+            .desc( "a list of metadata columns and regex values to match to. Example: country=\"Scotland|England\"" )
+            .type(String.class).build();
+    public final static Option MATCH_FIELD =  Option.builder( "mf" )
+            .longOpt("match-field")
             .argName("columns")
             .hasArgs()
             .required(false)

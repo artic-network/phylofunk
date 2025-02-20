@@ -2,7 +2,7 @@
   <configuration default="false" name="FastaFunk Extract" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="network.artic.phylofunk.FastaFunk" />
     <module name="phylofunk" />
-    <option name="PROGRAM_PARAMETERS" value="extract  -v -i genomes.fasta-m metadata.tsv -c accession -o genomes-extract.fasta -d metadata-extract.csv" />
+    <option name="PROGRAM_PARAMETERS" value="extract  -v -i genomes.fasta -m metadata.csv -c accession -mc country=&quot;SLE&quot; -o genomes-extract.fasta -d metadata-extract.csv" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
     <extension name="coverage">
       <pattern>

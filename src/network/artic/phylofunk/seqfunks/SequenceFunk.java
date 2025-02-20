@@ -137,7 +137,7 @@ public class SequenceFunk extends Funk {
                 }
 
                 count[0]++;
-                if (isVerbose && count[0] % 1000 == 0) {
+                if (isVerbose && count[0] % 10000 == 0) {
                     outStream.println("Number of sequences processed: " + count[0]);
                 }
             };
