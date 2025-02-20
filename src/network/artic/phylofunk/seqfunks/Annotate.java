@@ -9,6 +9,7 @@ import jebl.evolution.sequences.BasicSequence;
 import jebl.evolution.sequences.Sequence;
 import jebl.evolution.taxa.Taxon;
 
+import network.artic.phylofunk.funks.FunkOptions;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 import org.apache.commons.csv.CSVRecord;
@@ -41,10 +42,11 @@ public class Annotate extends SequenceFunk {
             options.addOption(INDEX_FIELD);
             options.addOption(FIELD_DELIMITER);
             options.addOption(DEFAULT_VALUE);
-            options.addOption(HEADER_FIELDS);
+            options.addOption(FunkOptions.LABEL_FIELDS);
             options.addOption(REPLACE);
-            options.addOption(ANNOTATE_DESCRIPTION);
+//            options.addOption(ANNOTATE_DESCRIPTION);
             options.addOption(IGNORE_MISSING);
+            options.addOption(SKIP_MISSING);
         }
 
         @Override
@@ -53,15 +55,15 @@ public class Annotate extends SequenceFunk {
                     commandLine.getOptionValue("input"),
                     commandLine.getOptionValue("metadata"),
                     commandLine.getOptionValue("output"),
-                    commandLine.getOptionValue("index-column", ""),
-                    Integer.parseInt(commandLine.getOptionValue("index-field", "0")),
+                    commandLine.getOptionValue("id-column", ""),
+                    Integer.parseInt(commandLine.getOptionValue("id-field", "0")),
                     commandLine.getOptionValue("field-delimiter", "|"),
                     commandLine.getOptionValue("default-value"),
-                    commandLine.getOptionValues("header-fields"),
+                    commandLine.getOptionValues("label-fields"),
                     commandLine.hasOption("replace"),
                     commandLine.hasOption("annotate-description"),
                     commandLine.hasOption("ignore-missing"),
-                    commandLine.hasOption("remove-missing"),
+                    commandLine.hasOption("skip-missing"),
                     isVerbose);
         }
 
@@ -72,29 +74,32 @@ public class Annotate extends SequenceFunk {
                     String outputPath,
                     String indexColumn,
                     int indexHeader,
-                    String headerDelimiter,
+                    String fieldDelimiter,
                     String defaultValue,
-                    String[] headerColumns,
+                    String[] labelColumns,
                     boolean replace,
                     boolean annotateDescription,
                     boolean ignoreMissing,
-                    boolean removeMissing,
+                    boolean skipMissing,
                     boolean isVerbose) {
 
-        super(metadataFileName, null, indexColumn, indexHeader, headerDelimiter, isVerbose);
+        super(metadataFileName, null, indexColumn, indexHeader, fieldDelimiter, isVerbose);
 
+        if (annotateDescription) {
+            throw new UnsupportedOperationException("annotate-description option not suppoted");
+        }
         List<Sequence> sequences = readFasta(fastaFileName);
 
         Map<String, Sequence> sequenceMap = getSequenceMap(sequences);
 
         List<Sequence> outSequences = new ArrayList<>();
 
-        if (headerColumns != null && headerColumns.length > 0) {
+        if (labelColumns != null && labelColumns.length > 0) {
             if (isVerbose) {
-                outStream.println((replace ? "Replacing" : "Appending") + " header fields with columns: " + String.join(", ", headerColumns));
+                outStream.println((replace ? "Replacing" : "Appending") + " label fields with columns: " + String.join(", ", labelColumns));
                 outStream.println();
             }
-            outSequences = relabelSequences(sequenceMap, metadata, headerColumns, headerDelimiter, defaultValue, replace, annotateDescription, ignoreMissing, removeMissing);
+            outSequences = relabelSequences(sequenceMap, metadata, labelColumns, fieldDelimiter, defaultValue, replace, annotateDescription, ignoreMissing, skipMissing);
         }
 
         if (isVerbose) {
@@ -122,17 +127,23 @@ public class Annotate extends SequenceFunk {
                                             boolean replace,
                                             boolean annotateDescription,
                                             boolean ignoreMissing,
-                                            boolean removeMissing ) {
+                                            boolean skipMissing ) {
 
         List<Sequence> relabelledSequences = new ArrayList<>();
+
+        int missingCount = 0;
 
         for (String key : sequenceMap.keySet()) {
             Sequence sequence = sequenceMap.get(key);
             CSVRecord record = metadata.get(key);
 
-            if (record == null && !ignoreMissing && !removeMissing && defaultValue == null) {
-                errorStream.println("Sequence index, " + key + ", not found in metadata table and no default value supplied");
-                System.exit(1);
+            if (record == null) {
+                if (!ignoreMissing && !skipMissing && defaultValue == null) {
+                    errorStream.println("Sequence index, " + key + ", not found in metadata table and no default value supplied");
+                    System.exit(1);
+                } else {
+                    missingCount += 1;
+                }
             }
 
             if (record != null || defaultValue != null) {
@@ -161,6 +172,17 @@ public class Annotate extends SequenceFunk {
             } else if (ignoreMissing) {
                 relabelledSequences.add(sequence);
             }
+        }
+
+        if (isVerbose && missingCount > 0) {
+            if (ignoreMissing) {
+                outStream.println("Unmatched sequences: " + missingCount + " left unannotated");
+            } else if (skipMissing) {
+                outStream.println("Unmatched sequences: " + missingCount + " skipped and not written to output");
+            } else if (defaultValue != null) {
+                outStream.println("Unmatched sequences: " + missingCount + " given default values");
+            }
+                outStream.println();
         }
 
         return relabelledSequences;

@@ -35,7 +35,7 @@ public class Merge extends Funk {
             options.addOption(OUTPUT_FILE);
             options.addOption(METADATA);
             options.addOption(INDEX_COLUMN);
-            options.addOption(HEADER_FIELDS);
+            options.addOption(FunkOptions.LABEL_FIELDS);
             options.addOption(REPLACE);
             options.addOption(IGNORE_MISSING);
         }
@@ -67,9 +67,9 @@ public class Merge extends Funk {
         super(isVerbose);
 
         Map<String, CSVRecord> metadata1 = readCSV(metadataFileName1, null);
-        List<String> headerNames1 = headerRecord.getParser().getHeaderNames();
+        List<String> headerNames1 = columnNames;
         Map<String, CSVRecord> metadata2 = readCSV(metadataFileName2, indexColumn);
-        List<String> headerNames2 = headerRecord.getParser().getHeaderNames();
+        List<String> headerNames2 = columnNames;
 
         indexColumn = (indexColumn == null ? headerNames2.get(0) : indexColumn);
 

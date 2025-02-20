@@ -25,7 +25,7 @@ public abstract class Funk {
     public final String fieldDelimiter;
 
     protected Map<String, CSVRecord> metadata = null;
-    protected CSVRecord headerRecord = null;
+    protected List<String> columnNames = null;
 
     Set<String> keys = null;
 
@@ -55,7 +55,6 @@ public abstract class Funk {
     public Funk(String metadataFileName, String indexColumn, int indexField, String fieldDelimiter, boolean isVerbose) {
         this.isVerbose = isVerbose;
 
-        this.indexColumn = indexColumn;
         this.indexField = indexField;
         if ("|".equals(fieldDelimiter)) {
             this.fieldDelimiter = "\\|";
@@ -66,6 +65,13 @@ public abstract class Funk {
         if (metadataFileName != null) {
             readMetadataTable(metadataFileName, indexColumn);
         }
+
+        if (indexColumn.isEmpty() && columnNames != null) {
+            this.indexColumn = columnNames.get(0);
+        } else {
+            this.indexColumn = indexColumn;
+        }
+
     }
 
     public static FunkFactory getCommandFactory(String name, FunkFactory[] commandFactories) {
@@ -87,7 +93,7 @@ public abstract class Funk {
         if (isVerbose) {
             outStream.println("Read metadata table: " + metadataFileName);
             outStream.println("               Rows: " + metadata.size());
-            outStream.println("       Index column: " + (indexColumn == null ? headerRecord.getParser().getHeaderNames().get(0) : indexColumn));
+            outStream.println("       Index column: " + (indexColumn.isEmpty() ? columnNames.get(0) : indexColumn));
             outStream.println();
         }
     }
@@ -96,48 +102,43 @@ public abstract class Funk {
         Map<String, CSVRecord> csv = new HashMap<>();
         try {
             Reader in = new FileReader(fileName);
-            CSVParser parser = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
-            if (indexColumn != null) {
+//            CSVParser parser = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
+            CSVParser parser = CSVFormat.RFC4180.builder()
+                    .setHeader()
+                    .setSkipHeaderRecord(true)
+                    .build()
+                    .parse(in);
+
+            columnNames = parser.getHeaderNames();
+
+            if (indexColumn.isEmpty()) {
                 // a particular column is used to index - check it is there for the first record
                 // and use it to key the records
+                indexColumn = columnNames.get(0);
+            }
 
-                boolean first = true;
-                for (CSVRecord record : parser) {
-                    if (first) {
-                        headerRecord = record;
-                        if (record.get(indexColumn) == null) {
-                            errorStream.println("Index column, " + indexColumn + " not found in metadata table");
-                            System.exit(1);
-                        }
-                        first = false;
+            boolean first = true;
+            for (CSVRecord record : parser) {
+                if (first) {
+                    if (!record.isMapped(indexColumn)) {
+                        errorStream.println("Index column, " + indexColumn + ", not found in metadata table");
+                        System.exit(1);
                     }
-                    String key = record.get(indexColumn);
-                    if (!key.isEmpty()) {
-                        if (csv.containsKey(key)) {
-                            errorStream.println("Duplicate index value, " + key + " in metadata table");
-//                        System.exit(1);
-                        }
-                        csv.put(key, record);
-                    }
+                    first = false;
                 }
-            } else {
-                // key the records against the first column
-                boolean first = true;
-                for (CSVRecord record : parser) {
-                    if (first) {
-                        headerRecord = record;
-                        first = false;
-                    }
-                    String key = record.get(0);
-                    if (!key.isEmpty()) {
-                        if (csv.containsKey(key)) {
-                            errorStream.println("Duplicate index value, " + key + " in metadata table");
+                String key = record.get(indexColumn);
+                if (!key.isEmpty()) {
+                    if (csv.containsKey(key)) {
+                        errorStream.println("Duplicate index value, " + key + " in metadata table");
 //                        System.exit(1);
-                        }
-                        csv.put(key, record);
                     }
+                    csv.put(key, record);
                 }
             }
+
+        } catch (IllegalArgumentException e) {
+            errorStream.println("Error parsing metadata file: " + e.getMessage());
+            System.exit(1);
         } catch (IOException e) {
             errorStream.println("Error reading metadata file: " + e.getMessage());
             System.exit(1);

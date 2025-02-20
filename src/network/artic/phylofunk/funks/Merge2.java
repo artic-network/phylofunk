@@ -36,7 +36,7 @@ public class Merge2 extends Funk {
             options.addOption(OUTPUT_FILE);
             options.addOption(METADATA);
             options.addOption(INDEX_COLUMN);
-            options.addOption(HEADER_FIELDS);
+            options.addOption(FunkOptions.LABEL_FIELDS);
             options.addOption(REPLACE);
             options.addOption(IGNORE_MISSING);
         }

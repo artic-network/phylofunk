@@ -43,9 +43,9 @@ These options specify the input and output files and are used by most of the com
 
 These options are used by commands where a match is made between a sequence label and a row in a metadata table.
 
-`-c` / `--index-column <column name>` Metadata column to use to match labels with the row in the metadata table (default first column)
+`-c` / `--id-column <column name>` Metadata column to use to match labels with the row in the metadata table (default first column)
 
-`-n` / `--index-field <field number>` The label field to use to match metadata rows indexed from 1 (default = whole label)
+`-n` / `--id-field <field number>` The label field to use to match metadata rows indexed from 1 (default = whole label)
 
 `--field-delimiter <delimiter>` The delimiter used to specify fields in the labels (default `|`)
 

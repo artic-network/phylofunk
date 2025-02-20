@@ -39,22 +39,19 @@ public abstract class FunkApp {
         if (args.length > 0 && !args[0].startsWith("-")) {
             factory = Funk.getCommandFactory(args[0], factories);
 
-            try {
-                // parse first just with help and version as these override other options
-                commandLine = parser.parse(options, Arrays.copyOfRange(args, 1, args.length));
-            } catch (Exception ignored) {
-            }
+            for (String arg : Arrays.copyOfRange(args, 1, args.length)) {
 
-            if (commandLine == null || commandLine.hasOption("help")) {
-                // add the options here for the help message
-                factory.setOptions(options);
-                options.addOption("v", "verbose", false, "write analysis details to console");
-                printHelp(factory, options);
-                return;
-            }
-            if (commandLine != null && commandLine.hasOption("version")) {
-                System.out.println(version);
-                return;
+                if (arg.equalsIgnoreCase("-h") || arg.equalsIgnoreCase("--help")) {
+                    // add the options here for the help message
+                    factory.setOptions(options);
+                    options.addOption("v", "verbose", false, "write analysis details to console");
+                    printHelp(factory, options);
+                    return;
+                }
+                if (arg.equalsIgnoreCase("--version") ) {
+                    System.out.println(version);
+                    return;
+                }
             }
 
             factory.setOptions(options);

@@ -1,5 +1,5 @@
-,final_label,virus,sample_id,sequence_id,sample_lab,sequencing_lab,accession,country,location,platform,prop_ambig.,date,collection_date,imputed_date.,reference,GP82
-1,EBOV|20140008|KR653251|SLE|Kenema|2014-08-22,EBOV,20140008,20140008,CDC,CDC,KR653251,SLE,Kenema,Illumina,0,2014-08-22,2014-08-22,,Park et al,V
+number,final_label,virus,sample_id,sequence_id,sample_lab,sequencing_lab,accession,country,location,platform,prop_ambig.,date,collection_date,imputed_date.,reference,GP82
+1,EBOV|20140008|KR653251|SLE|Kenema|2014-08-22,EBOV,20140008,20140008,CDC,CDC,KR653251x,SLE,Kenema,Illumina,0,2014-08-22,2014-08-22,,Park et al,V
 2,EBOV|20140024|KR653252|SLE|PortLoko|2014-08-20,EBOV,20140024,20140024,CDC,CDC,KR653252,SLE,PortLoko,Illumina,0,2014-08-20,2014-08-20,,Park et al,V
 3,EBOV|20140038|KR653267|SLE|Tonkolili|2014-08-23,EBOV,20140038,20140038,CDC,CDC,KR653267,SLE,Tonkolili,Illumina,0,2014-08-23,2014-08-23,,Park et al,V
 4,EBOV|20140091|KR653239|SLE|WesternRural|2014-08-22,EBOV,20140091,20140091,CDC,CDC,KR653239,SLE,WesternRural,Illumina,0,2014-08-22,2014-08-22,,Park et al,V

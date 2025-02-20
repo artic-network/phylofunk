@@ -131,6 +131,12 @@ public class FunkOptions {
             .desc("ignore any missing matches in annotations table (default false)")
             .type(String.class).build();
 
+    public final static Option SKIP_MISSING = Option.builder()
+            .longOpt("skip-missing")
+            .required(false)
+            .desc("skip any missing matches in annotations table (default false)")
+            .type(String.class).build();
+
     public final static Option UNIQUE_ONLY = Option.builder()
             .longOpt("unique-only")
             .required(false)
@@ -152,14 +158,6 @@ public class FunkOptions {
             .hasArg()
             .required(false)
             .desc( "the default value to use if the index is not found in the metadata" )
-            .type(String.class).build();
-
-    public final static Option HEADER_FIELDS =  Option.builder(  )
-            .longOpt("header-fields")
-            .argName("columns")
-            .hasArgs()
-            .required(false)
-            .desc( "a list of metadata columns to add as sequence header fields" )
             .type(String.class).build();
 
     public final static Option MATCH_VALUES =  Option.builder(  )
