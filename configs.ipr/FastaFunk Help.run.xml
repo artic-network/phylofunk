@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="FastaFunk Help" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="network.artic.phylofunk.FastaFunk" />
+    <module name="phylofunk" />
+    <option name="PROGRAM_PARAMETERS" value="extract -h" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="network.artic.phylofunk.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

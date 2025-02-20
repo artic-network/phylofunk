@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="FastaFunk Dedupe" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="network.artic.phylofunk.FastaFunk" />
+    <module name="phylofunk" />
+    <option name="PROGRAM_PARAMETERS" value="dedupe -i genomes.fasta -m metadata.csv --id-column accession --id-field 1 --target-column location -o deduped.fasta --output-metadata deduped.csv -v" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="network.artic.phylofunk.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
