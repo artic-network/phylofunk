@@ -1,10 +1,13 @@
 # jclusterfunk
 
-###
-
 The general command line for running jclusterfunk is:
 
 `jclusterfunk <command> [options]`
+
+To get the list of available options for a given command use:
+
+`jclusterfunk annotate --help`
+
 
 ### commands
 
@@ -45,17 +48,21 @@ The general command line for running jclusterfunk is:
 
 ### taxa matching options
 
-`-c` / `--index-column <column name>` Metadata column to use to match tip labels (default first column)
+`-c` / `--id-column <column name>` Metadata column to use to match tip labels (default first column)
 
-`--index-field <field number>` The tip label field to use to match metadata rows indexed from 1 (default = whole label)
+`--id-field <field number>` The tip label field to use to match metadata rows indexed from 1 (default = whole label)
 
 `--field-delimiter <delimiter>` The delimiter used to specify fields in the tip labels (default `|`)
+
+These options are used by functions where a metadata file (in CSV or TSV format) is provided and the rows in the table are matched to the sequences using unique IDs or strings. These link a column in the metadata table (using the `--id-column` option specifying the column name) to the label of the tips (taxa) in the tree. Optionally this link can be made to a specific 'field' in the label using the `--id-field` option and the number of the field. Fields in a taxon label are strings (i.e., accessions, locations, dates) separated by a delimiter character (by default it uses the bar `|` character). They are numbered from 1.
 
 ### command specific options
 
 #### `annotate`
 
-`--label-fields <columns>` A list of metadata columns to add as tip label header fields.
+This function links the metadata file to tree taxa and then 'annotates' the taxa labels with additional pieces of data from the metadata table. The data can be added directly as 'fields' into the taxon/tip label or can be added as an 'attribute' using the [extended NEXUS metacomment format](http://beast.community/) using `<key> = <value>` pairs. This can be used by software that supports this format (including [FigTree](http://github.com/rambaut/figtree) and [BEAST](http://beast.community/).
+
+`--label-fields <columns>` A list of metadata columns to add as tip label fields.
 
 `--tip-attributes <columns>` A list of metadata columns to add as tip attributes.
 
@@ -63,31 +70,34 @@ The general command line for running jclusterfunk is:
 
 `--replace` Replace the existing annotations or tip labels rather than appending (default: append).
 
+_Example:_
+`jclusterfunk annotate -i phylip.tree -m metadata.csv --index-column sample --index-field 1 --label-fields country date -o annotated.tree`
+
+This would match the value in the metadata column called `sample` with the first field in the tree tip/taxa labels and then append the values for `country` and `date` to the label.
+
+This would result in a label like this:
+```
+taxon1234|Scotland|1972-02-19
+```
+
 #### `prune`
 
-`-k` `--keep-taxa` Keep the taxa specifed (default: prune specified taxa)
+Specify a set of taxa using the `-t` option - these can be in the first column of a CSV or TSV file or in a tree in Newick or NEXUS format. The tips are pruned out along with any internal nodes that have fewer than 2 descendants as a result.
+
+`-k` `--keep-taxa` Keep the taxa specifed and prune the rest (default: prune specified taxa)
 
 #### `reorder`
+
+Reorder the branches at each internal node so that they are in either increasing or decreasing order of the number of tips below them.
 
 `--decreasing` Order nodes by decreasing clade size.
 `--increasing` Order nodes by increasing clade size.
 
 #### `reroot`
 
+Change the root position of the tree. If an outgroup is specified then the most recent common ancestor (MRCA) of the specified taxa will be found (this is based on the current rooting of the tree and the MRCA of the outgroup can't be the root itself).
+
 `--outgroup <outgroup taxa>` Root tree using specified outgroup
+`--root-location` The position of the root on the branch leading to the outgroup - a number between 0 and 1 (default: 0.5).
 `--midpoint` Root tree at the branch-length midpoint.
 
-## Installation
-
-The easiest way to install is using `conda`:
-
-`conda install cov-ert::jclusterfunk`
-
-Alternatively, the download the latest binary:
-https://github.com/cov-ert/jclusterfunk/releases/latest
-
-This contains two files:
-`jclusterfunk` an executable shell file
-`jclusterfunk.jar` the Java jar file
-
-Both of these can be copies to a `bin` directory on the path such as `/usr/local/bin` or `~/bin`

@@ -32,7 +32,7 @@ class ClusterFunk extends FunkApp {
     };
 
     ClusterFunk(String[] args) {
-        super(args, FACTORIES, NAME, VERSION, HEADER, FOOTER);
+        super(args, FACTORIES, NAME, HEADER, FOOTER);
     }
 
     public static void main(String[] args) {

@@ -41,7 +41,7 @@ These options specify the input and output files and are used by most of the com
 
 ### label matching options
 
-These options are used by commands where a match is made between a sequence label and a row in a metadata table.
+These options are used by functions where a metadata file (in CSV or TSV format) is provided and the rows in the table are matched to the sequences using unique IDs or strings. These link a column in the metadata table (using the `--id-column` option specifying the column name) to the label/header of the sequences in the FASTA file. Optionally this link can be made to a specific 'field' in the label using the `--id-field` option and the number of the field. Fields in a sequence label are strings (i.e., accessions, locations, dates) separated by a delimiter character (by default it uses the bar `|` character).
 
 `-c` / `--id-column <column name>` Metadata column to use to match labels with the row in the metadata table (default first column)
 
