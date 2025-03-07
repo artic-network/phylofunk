@@ -11,18 +11,17 @@ import java.util.Arrays;
  * @version $
  */
 public abstract class FunkApp {
+    static final String VERSION = "v1.0.0";
     private final FunkFactory[] factories;
     private final String name;
-    private final String version;
     private final String header;
     private final String footer;
 
 
-    public FunkApp(String[] args, FunkFactory[] factories, String name, String version, String header, String footer) {
+    public FunkApp(String[] args, FunkFactory[] factories, String name, String header, String footer) {
 
         this.factories = factories;
         this.name = name;
-        this.version = version;
         this.header = header;
         this.footer = footer;
 
@@ -49,7 +48,7 @@ public abstract class FunkApp {
                     return;
                 }
                 if (arg.equalsIgnoreCase("--version") ) {
-                    System.out.println(version);
+                    System.out.println(VERSION);
                     return;
                 }
             }
@@ -79,7 +78,7 @@ public abstract class FunkApp {
             }
 
             if (commandLine.hasOption("version")) {
-                System.out.println(version);
+                System.out.println(VERSION);
                 return;
             }
 

@@ -12,7 +12,6 @@ import network.artic.phylofunk.seqfunks.Hashes;
  */
 class FastaFunk extends FunkApp {
     private final static String NAME = "jfastafunk";
-    private static final String VERSION = "v1.0.0";
     private static final String HEADER = "\nFastaFunk " + VERSION + "\nBunch of functions for FASTA files\n\n";
     private static final String FOOTER = "";
 
@@ -25,7 +24,7 @@ class FastaFunk extends FunkApp {
     };
 
     FastaFunk(String[] args) {
-        super(args, FACTORIES, NAME, VERSION, HEADER, FOOTER);
+        super(args, FACTORIES, NAME, HEADER, FOOTER);
     }
 
 
