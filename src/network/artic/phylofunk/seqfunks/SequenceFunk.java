@@ -143,11 +143,11 @@ public class SequenceFunk extends Funk {
             };
             importer.importSequences(callback, ProgressListener.EMPTY);
 
+            writer.close();
             if (isVerbose) {
                 outStream.println("Total sequences processed: " + count[0]);
                 outStream.println();
             }
-
         } catch (ImportException ie) {
             errorStream.println("Error parsing sequence file, " + sequenceFileName + ": " + ie.getMessage());
             System.exit(1);
