@@ -102,13 +102,21 @@ public abstract class Funk {
         Map<String, CSVRecord> csv = new HashMap<>();
         try {
             Reader in = new FileReader(fileName);
-//            CSVParser parser = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
-            CSVParser parser = CSVFormat.RFC4180.builder()
-                    .setHeader()
-                    .setSkipHeaderRecord(true)
-                    .build()
-                    .parse(in);
 
+            CSVParser parser;
+            if (fileName.toLowerCase().endsWith(".tsv")) {
+                parser = CSVFormat.TDF.builder()
+                        .setHeader()
+                        .setSkipHeaderRecord(true)
+                        .build()
+                        .parse(in);
+            } else {
+                parser = CSVFormat.RFC4180.builder()
+                        .setHeader()
+                        .setSkipHeaderRecord(true)
+                        .build()
+                        .parse(in);
+            }
             columnNames = parser.getHeaderNames();
 
             if (indexColumn.isEmpty()) {
