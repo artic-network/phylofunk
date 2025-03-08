@@ -7,18 +7,18 @@ later installed.
 
 ### JClusterFunk
 
-[`jclusterfunk`](jclusterfunk.html) takes phylogenetic trees in Newick or NEXUS format and provides a range of functions
+[`jclusterfunk`](https://artic-network.github.io/phylofunk/jclusterfunk.html) takes phylogenetic trees in Newick or NEXUS format and provides a range of functions
 including annotating with metadata, rerooting, pruning, rescaling and much more.
 
-[See here for detailed instructions for running `jclusterfunk`](jclusterfunk.html)
+[See here for detailed instructions for running `jclusterfunk`](https://artic-network.github.io/phylofunk/jclusterfunk.html)
 
 ### JFastaFunk
 
-[`jfastafunk`](jfastafunk.html) takes sequences in FASTA format and provides various functions to organise these. 
+[`jfastafunk`](https://artic-network.github.io/phylofunk/jfastafunk.html) takes sequences in FASTA format and provides various functions to organise these. 
 It focuses on the sequence labels (headers), matching these to metadata tables inorder to add annotations, extract
 sequences into new files, de-duplicate and more. It doesn't change the actual sequences.
 
-[See here for detailed instructions for running `jfastafunk`](jfastafunk.html)
+[See here for detailed instructions for running `jfastafunk`](https://artic-network.github.io/phylofunk/jfastafunk.html)
 
 ## Installation
 
